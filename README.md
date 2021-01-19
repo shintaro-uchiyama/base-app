@@ -1,6 +1,26 @@
 # 概要
 言葉を用いた連想ゲーム  
 
+# 実行方法
+```zsh
+$ bazel run //:gazelle
+$ bazel run //bff/cmd/hello:hello_test
+INFO: Analyzed target //bff/cmd/hello:hello_test (1 packages loaded, 4 targets configured).
+INFO: Found 1 target...
+Target //bff/cmd/hello:hello_test up-to-date:
+  bazel-bin/bff/cmd/hello/hello_test_/hello_test
+INFO: Elapsed time: 0.677s, Critical Path: 0.49s
+INFO: 8 processes: 3 internal, 5 darwin-sandbox.
+INFO: Build completed successfully, 8 total actions
+INFO: Build completed successfully, 8 total actions
+exec ${PAGER:-/usr/bin/less} "$0" || exit 1
+Executing tests from //bff/cmd/hello:hello_test
+-----------------------------------------------------------------------------
+===
+aaa
+PASS
+```
+
 # ゲーム内容
 2チームに分かれて行うゲーム  
 1チームは最低2名。上限はなし。
