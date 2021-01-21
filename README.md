@@ -21,6 +21,24 @@ aaa
 PASS
 ```
 
+# 外部パッケージの取り込み
+```zsh
+$ bazel run //:gazelle -- update-repos -from_file=bff/go.mod -to_macro=bff/repositories.bzl%go_repositories -prune
+$ bazel run //:gazelle
+$ bazel test //bff/cmd/hello:hello_test
+INFO: Analyzed target //bff/cmd/hello:hello_test (0 packages loaded, 0 targets configured).
+INFO: Found 1 test target...
+Target //bff/cmd/hello:hello_test up-to-date:
+  bazel-bin/bff/cmd/hello/hello_test_/hello_test
+INFO: Elapsed time: 1.493s, Critical Path: 1.30s
+INFO: 7 processes: 1 internal, 6 darwin-sandbox.
+INFO: Build completed successfully, 7 total actions
+//bff/cmd/hello:hello_test                                               PASSED in 0.4s
+
+Executed 1 out of 1 test: 1 test passes.
+INFO: Build completed successfully, 7 total actions
+```
+
 # ゲーム内容
 2チームに分かれて行うゲーム  
 1チームは最低2名。上限はなし。

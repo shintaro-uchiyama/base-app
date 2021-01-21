@@ -5,6 +5,7 @@ go_library(
     srcs = ["main.go"],
     importpath = "github.com/shintaro-uchiyama/jargon/bff/cmd/hello",
     visibility = ["//visibility:public"],
+    deps = ["@com_github_google_uuid//:uuid"],
 )
 
 go_test(

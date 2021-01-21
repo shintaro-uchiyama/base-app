@@ -1,12 +1,19 @@
 package hello
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/google/uuid"
+)
 
 func main() {
 	printSomething()
 }
 
 func printSomething() {
-	fmt.Println("===")
-	fmt.Println("aaa")
+	uuidObj, _ := uuid.NewUUID()
+	id := uuidObj.ID()
+	fmt.Println("======")
+	fmt.Println("---")
+	fmt.Println(fmt.Sprintf("aaa: %+v", id))
 }
