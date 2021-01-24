@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  nextjs:
+    build: frontend/docker
+    container_name: frontend
+    volumes:
+      - ./frontend:/usr/src/app
+    command: "yarn dev"
+    ports:
+      - "3000:3000"
