@@ -8,10 +8,14 @@
     "start": "next start"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "firebase": "^8.2.4",
+    "i18next": "^19.8.4",
     "next": "10.0.5",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-i18next": "^11.8.5",
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
