@@ -8,3 +8,11 @@ services:
     command: "yarn dev"
     ports:
       - "3000:3000"
+  storybook:
+    build: frontend/docker
+    container_name: storybook
+    volumes:
+      - ./frontend:/usr/src/app
+    command: "yarn storybook"
+    ports:
+      - "6006:6006"
