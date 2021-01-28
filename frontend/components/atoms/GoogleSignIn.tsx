@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 
 const GoogleSignInWrapper = styled.div`
   .google-btn {
@@ -38,11 +39,11 @@ const GoogleSignInWrapper = styled.div`
   &:active {
     background: #4285f4;
   }
-
-  @import url(https://fonts.googleapis.com/css?family=Roboto:500);
 `;
 
 const GoogleSignIn = () => {
+  const [t] = useTranslation();
+
   return (
     <GoogleSignInWrapper className="container">
       <div className="google-btn">
@@ -53,7 +54,7 @@ const GoogleSignIn = () => {
           />
         </div>
         <p className="btn-text">
-          <b>Sign in with google</b>
+          <b>{t("index.buttons.googleSignIn")}</b>
         </p>
       </div>
     </GoogleSignInWrapper>

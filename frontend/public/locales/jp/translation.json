@@ -1,1 +1,7 @@
-{}
+{
+  "index": {
+    "buttons": {
+      "googleSignIn": "Sign in with google"
+    }
+  }
+}
