@@ -1,3 +1,7 @@
-select a,
-b,
-          from aaa   where   i = 1
+SELECT
+  a,
+  b
+FROM
+  aaa
+WHERE
+  i = 1;
