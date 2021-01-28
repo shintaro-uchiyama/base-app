@@ -1,7 +1,8 @@
 name: ZetaSQL Formatter
 on:
   push:
-    branches: [master]
+    branches:
+      - main
 
 jobs:
   format:
