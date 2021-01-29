@@ -2,6 +2,7 @@
 
 import React, { ComponentProps } from "react";
 import { Story } from "@storybook/react/types-6-0";
+import { withI18n } from "storybook-addon-i18n";
 
 import GoogleSignIn from "./GoogleSignIn";
 
