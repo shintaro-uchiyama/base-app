@@ -3,7 +3,7 @@ import firebase from "../hooks/firebase";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { AuthContext } from "../components/context/Auth";
-import GoogleSignIn from "../components/atoms/GoogleSignIn";
+import GoogleSignInButton from "../components/atoms/GoogleSignInButton";
 
 const Home: FC = () => {
   const { currentUser } = useContext(AuthContext);
@@ -55,7 +55,7 @@ const Home: FC = () => {
       <main className={styles.main}>
         <h1 className={styles.title}>Good Morning, World!</h1>
 
-        <GoogleSignIn />
+        <GoogleSignInButton />
       </main>
     </div>
   );

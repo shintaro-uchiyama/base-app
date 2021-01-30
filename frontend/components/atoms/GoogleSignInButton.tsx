@@ -12,7 +12,7 @@ const GoogleIcon = styled.img`
   }
 `;
 
-const GoogleSignIn = () => {
+const GoogleSignInButton = () => {
   const [t] = useTranslation();
 
   return (
@@ -25,4 +25,4 @@ const GoogleSignIn = () => {
   );
 };
 
-export default GoogleSignIn;
+export default GoogleSignInButton;
