@@ -1,24 +1,20 @@
-import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import { Button } from "@material-ui/core";
+import { FC } from "react";
 
-const GoogleIcon = styled.img`
-  .google-icon {
-    position: absolute;
-    margin-top: 11px;
-    margin-left: 11px;
-    width: 18px;
-    height: 18px;
-  }
-`;
-
-const GoogleSignInButton = () => {
+interface GoogleSignInButtonProps {
+  onClick: () => void;
+}
+const GoogleSignInButton: FC<GoogleSignInButtonProps> = (props) => {
   const [t] = useTranslation();
 
   return (
     <Button
       variant="outlined"
-      startIcon={<img src="/google-icon.svg" width={18} height={18} />}
+      startIcon={
+        <img alt="google icon" src="/google-icon.svg" width={18} height={18} />
+      }
+      onClick={props.onClick}
     >
       {t("index.buttons.googleSignIn")}
     </Button>

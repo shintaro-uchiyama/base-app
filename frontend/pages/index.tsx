@@ -55,7 +55,7 @@ const Home: FC = () => {
       <main className={styles.main}>
         <h1 className={styles.title}>Good Morning, World!</h1>
 
-        <GoogleSignInButton />
+        <GoogleSignInButton onClick={login} />
       </main>
     </div>
   );

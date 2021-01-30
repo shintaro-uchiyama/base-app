@@ -4,7 +4,7 @@ import { Story } from "@storybook/react/types-6-0";
 import GoogleSignInButton from "./GoogleSignInButton";
 
 export default {
-  title: "atoms/GoogleSignIn",
+  title: "jargon/atoms/GoogleSignIn",
   component: GoogleSignInButton,
 };
 
