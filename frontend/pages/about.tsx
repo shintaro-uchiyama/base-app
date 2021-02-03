@@ -1,20 +1,18 @@
+import { useTranslation } from "react-i18next";
 import { useContext } from "react";
 import styles from "../styles/Home.module.css";
 import { AuthContext } from "../components/context/Auth";
-import { withTranslation } from "../i18n";
 import { useRouter } from "next/router";
 import { TFunction } from "next-i18next";
 
-interface AboutProps {
-  t: TFunction;
-}
-const About = ({ t }: AboutProps) => {
+const About = () => {
   const { currentUser } = useContext(AuthContext);
   const router = useRouter();
 
   if (!currentUser) {
     router.push("/");
   }
+  const [t] = useTranslation();
 
   return (
     <div className={styles.container}>
@@ -25,8 +23,4 @@ const About = ({ t }: AboutProps) => {
   );
 };
 
-About.getInitialProps = async () => ({
-  namespacesRequired: ["common", "about"],
-});
-
-export default withTranslation("about")(About);
+export default About;

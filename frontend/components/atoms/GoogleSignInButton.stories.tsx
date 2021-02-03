@@ -1,4 +1,4 @@
-import React, { ComponentProps } from "react";
+import React, { ComponentProps, Suspense } from "react";
 import { Story } from "@storybook/react/types-6-0";
 
 import GoogleSignInButton from "./GoogleSignInButton";
