@@ -3,19 +3,17 @@ import React from "react";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../components/theme";
-import jpJson from "../public/locales/jp/translation.json";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import Backend from 'i18next-http-backend';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
 import { AuthProvider } from "../components/context/Auth";
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
-  i18n.use(initReactI18next).init({
-    resources: {
-      jp: { translation: jpJson },
-    },
-    lng: "jp",
-    fallbackLng: "jp",
+  i18n.use(Backend).use(LanguageDetector).use(initReactI18next).init({
+    fallbackLng: "ja",
+    debug: true,
     interpolation: { escapeValue: false },
   });
 
