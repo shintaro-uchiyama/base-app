@@ -1,0 +1,9 @@
+{
+  "title": "Good Morning, World!",
+  "buttons": {
+    "about": "このサイトについて",
+    "signIn": {
+      "google": "Googleでサインイン"
+    }
+  }
+}
