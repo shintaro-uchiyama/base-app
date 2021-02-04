@@ -10,9 +10,9 @@ const About = () => {
 
   if (!currentUser) {
     router.push("/");
-    return (<></>)
+    return <></>;
   }
-  const [t] = useTranslation(['about', 'common']);
+  const [t] = useTranslation(["about", "common"]);
 
   return (
     <div className={styles.container}>
@@ -22,5 +22,9 @@ const About = () => {
   );
 };
 
-const AboutWrapper = () => (<Suspense fallback="Loading"><About /></Suspense>)
-export default AboutWrapper
+const AboutWrapper = () => (
+  <Suspense fallback="Loading">
+    <About />
+  </Suspense>
+);
+export default AboutWrapper;

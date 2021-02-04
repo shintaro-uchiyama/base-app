@@ -14,7 +14,7 @@ const Home: FC = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     await firebase.auth().signInWithRedirect(provider);
   };
-  const [t] = useTranslation(['index']);
+  const [t] = useTranslation(["index"]);
   return (
     <div className={styles.container}>
       <link
@@ -29,7 +29,7 @@ const Home: FC = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>{t('title')}</h1>
+        <h1 className={styles.title}>{t("title")}</h1>
         {currentUser ? (
           <Link href="/about">
             <a>{t("buttons.about")}</a>
@@ -42,5 +42,9 @@ const Home: FC = () => {
   );
 };
 
-const HomeWrapper = () => (<Suspense fallback="loading"><Home /></Suspense>)
+const HomeWrapper = () => (
+  <Suspense fallback="loading">
+    <Home />
+  </Suspense>
+);
 export default HomeWrapper;
