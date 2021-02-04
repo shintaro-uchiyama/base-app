@@ -6,7 +6,7 @@ interface GoogleSignInButtonProps {
   onClick: () => void;
 }
 const GoogleSignInButton: FC<GoogleSignInButtonProps> = (props) => {
-  const [t] = useTranslation();
+  const [t] = useTranslation(["index"]);
 
   return (
     <Button
@@ -16,7 +16,7 @@ const GoogleSignInButton: FC<GoogleSignInButtonProps> = (props) => {
       }
       onClick={props.onClick}
     >
-      {t("index.buttons.googleSignIn")}
+      {t("buttons.signIn.google")}
     </Button>
   );
 };

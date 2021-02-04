@@ -1,0 +1,9 @@
+{
+  "title": "Good Morning, World!",
+  "buttons": {
+    "about": "About this site",
+    "signIn": {
+      "google": "Sign in with Google"
+    }
+  }
+}

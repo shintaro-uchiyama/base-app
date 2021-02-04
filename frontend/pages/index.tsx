@@ -1,5 +1,6 @@
-import { FC, useContext } from "react";
+import { FC, useContext, Suspense } from "react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import firebase from "../hooks/firebase";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -13,6 +14,7 @@ const Home: FC = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     await firebase.auth().signInWithRedirect(provider);
   };
+  const [t] = useTranslation(['index']);
   return (
     <div className={styles.container}>
       <link
@@ -27,10 +29,10 @@ const Home: FC = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Good Morning, World!</h1>
+        <h1 className={styles.title}>{t('title')}</h1>
         {currentUser ? (
           <Link href="/about">
-            <a>abount</a>
+            <a>{t("buttons.about")}</a>
           </Link>
         ) : (
           <GoogleSignInButton onClick={signIn} />
@@ -40,4 +42,5 @@ const Home: FC = () => {
   );
 };
 
-export default Home;
+const HomeWrapper = () => (<Suspense fallback="loading"><Home /></Suspense>)
+export default HomeWrapper;
