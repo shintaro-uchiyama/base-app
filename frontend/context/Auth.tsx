@@ -1,5 +1,5 @@
 import { FC, createContext, useState } from "react";
-import firebase from "../../hooks/firebase";
+import firebase from "../services/firebase";
 import "firebase/auth";
 import { useRouter } from "next/router";
 
@@ -24,6 +24,7 @@ const AuthProvider: FC = ({ children }) => {
   const router = useRouter();
   if (isAuthChecked && !currentUser && router.pathname !== "/") {
     router.push("/");
+    return <></>;
   }
 
   return (

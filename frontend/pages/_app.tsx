@@ -3,7 +3,7 @@ import React from "react";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../components/theme";
-import { AuthProvider } from "../components/context/Auth";
+import { AuthProvider } from "../context/Auth";
 import "../i18n";
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {

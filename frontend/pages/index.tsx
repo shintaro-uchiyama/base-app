@@ -1,10 +1,10 @@
 import { FC, useContext, Suspense } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import firebase from "../hooks/firebase";
+import firebase from "../services/firebase";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { AuthContext } from "../components/context/Auth";
+import { AuthContext } from "../context/Auth";
 import GoogleSignInButton from "../components/atoms/GoogleSignInButton";
 
 const Home: FC = () => {
