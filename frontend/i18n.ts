@@ -9,7 +9,5 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: "ja",
-    debug: true,
-    ns: "common",
-    interpolation: { escapeValue: false },
+    ns: ["common"],
   });
