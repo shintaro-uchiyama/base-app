@@ -1,5 +1,5 @@
 import { createContext, useEffect } from "react";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Container, Grid } from "@material-ui/core";
 import firebase from "../services/firebase";
 import "firebase/auth";
 import { useRouter } from "next/router";
@@ -32,7 +32,13 @@ const AuthProvider = ({ children }) => {
           {children}
         </AuthContext.Provider>
       ) : (
-        <CircularProgress />
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Grid container alignItems="center" justify="center">
+              <CircularProgress />
+            </Grid>
+          </Grid>
+        </Grid>
       )}
     </>
   );

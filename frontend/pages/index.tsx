@@ -6,7 +6,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { AuthContext } from "../context/Auth";
 import GoogleSignInButton from "../components/atoms/GoogleSignInButton";
-import { Container } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
 const Home: FC = () => {
   const { currentUser } = useContext(AuthContext);
@@ -17,7 +17,7 @@ const Home: FC = () => {
   };
   const [t] = useTranslation(["index"]);
   return (
-    <Container>
+    <Grid container>
       <link
         rel="stylesheet"
         type="text/css"
@@ -39,7 +39,7 @@ const Home: FC = () => {
           <GoogleSignInButton onClick={signIn} />
         )}
       </main>
-    </Container>
+    </Grid>
   );
 };
 
