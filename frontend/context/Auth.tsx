@@ -3,13 +3,9 @@ import { CircularProgress, Grid } from "@material-ui/core";
 import firebase from "../services/firebase";
 import "firebase/auth";
 import { useRouter } from "next/router";
-import useUser from "../hooks/useUser";
+import { useUser, AuthHook } from "../hooks/useUser";
 
-interface AuthContextProps {
-  currentUser: firebase.User;
-}
-
-const AuthContext = createContext<AuthContextProps>({ currentUser: null });
+const AuthContext = createContext<Partial<AuthHook>>({});
 
 const AuthProvider = ({ children }) => {
   const { state, dispatch } = useUser();
@@ -28,7 +24,7 @@ const AuthProvider = ({ children }) => {
   return (
     <>
       {state.isAuthChecked ? (
-        <AuthContext.Provider value={{ currentUser: state.currentUser }}>
+        <AuthContext.Provider value={{ state, dispatch }}>
           {children}
         </AuthContext.Provider>
       ) : (

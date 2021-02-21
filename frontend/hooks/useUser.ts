@@ -1,4 +1,4 @@
-import { useReducer, Reducer } from "react";
+import { useReducer, Reducer, Dispatch } from "react";
 import firebase from "../services/firebase";
 
 interface State {
@@ -29,7 +29,12 @@ const userReducer: Reducer<State, Action> = (state, action) => {
   }
 };
 
-const useUser = () => {
+export interface AuthHook {
+  state: State;
+  dispatch: Dispatch<Action>;
+}
+
+export const useUser = (): AuthHook => {
   const [state, dispatch] = useReducer(userReducer, {
     isAuthChecked: false,
     currentUser: null,
@@ -37,5 +42,3 @@ const useUser = () => {
 
   return { state, dispatch };
 };
-
-export default useUser;
