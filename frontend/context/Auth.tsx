@@ -1,42 +1,40 @@
-import { FC, createContext, useState } from "react";
+import { createContext, useEffect } from "react";
+import { CircularProgress } from "@material-ui/core";
 import firebase from "../services/firebase";
 import "firebase/auth";
 import { useRouter } from "next/router";
+import useUser from "../hooks/useUser";
 
-type AuthContextProps = {
-  currentUser: firebase.User | null | undefined;
-};
+interface AuthContextProps {
+  currentUser: firebase.User;
+}
 
-const AuthContext = createContext<AuthContextProps>({ currentUser: undefined });
+const AuthContext = createContext<AuthContextProps>({ currentUser: null });
 
-const AuthProvider: FC = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<
-    firebase.User | null | undefined
-  >(undefined);
-
-  const [isAuthChecked, setIsAuthChecked] = useState(false);
-
-  firebase.auth().onAuthStateChanged((user) => {
-    setCurrentUser(user);
-    setIsAuthChecked(true);
-  });
+const AuthProvider = ({ children }) => {
+  const { state, dispatch } = useUser();
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      dispatch({ type: "set", user });
+    });
+  }, []);
 
   const router = useRouter();
-  if (isAuthChecked && !currentUser && router.pathname !== "/") {
+  if (state.isAuthChecked && !state.currentUser && router.pathname !== "/") {
     router.push("/");
     return <></>;
   }
 
   return (
-    <div>
-      {isAuthChecked ? (
-        <AuthContext.Provider value={{ currentUser: currentUser }}>
+    <>
+      {state.isAuthChecked ? (
+        <AuthContext.Provider value={{ currentUser: state.currentUser }}>
           {children}
         </AuthContext.Provider>
       ) : (
-        <div>Loading</div>
+        <CircularProgress />
       )}
-    </div>
+    </>
   );
 };
 
