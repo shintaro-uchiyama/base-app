@@ -1,13 +1,30 @@
 version: '3.8'
+networks:
+  backend:
 services:
   nextjs:
     build: frontend/docker
     container_name: frontend
     volumes:
       - ./frontend:/usr/src/app
+    networks:
+      - backend
     command: "yarn dev"
     ports:
-      - "3000:3000"
+      - 3000:3000
+  firebase:
+    build: frontend/docker/firebase
+    container_name: firebase
+    ports:
+      - 4000:4000
+      - 9099:9099
+    volumes:
+      - ./frontend:/opt/workspace
+    networks:
+      - backend
+    working_dir: /opt/workspace
+    command: "firebase emulators:start"
+    tty: true
   storybook:
     build: frontend/docker
     container_name: storybook
