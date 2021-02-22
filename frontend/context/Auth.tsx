@@ -3,16 +3,19 @@ import { CircularProgress, Grid } from "@material-ui/core";
 import firebase from "../services/firebase";
 import "firebase/auth";
 import { useRouter } from "next/router";
-import { useUser, AuthHook } from "../hooks/useUser";
+import { useUser, AuthHook, ActionType } from "../hooks/useUser";
 
 const AuthContext = createContext<Partial<AuthHook>>({});
 
 const AuthProvider = ({ children }) => {
-  const { state, dispatch } = useUser();
+  const { state, dispatch } = useUser(firebase.auth().currentUser);
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      dispatch({ type: "set", user });
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      dispatch({ type: ActionType.Set, user });
     });
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const router = useRouter();

@@ -6,7 +6,7 @@ interface State {
   currentUser: firebase.User;
 }
 
-const ActionType = {
+export const ActionType = {
   Set: "set",
 };
 
@@ -34,10 +34,10 @@ export interface AuthHook {
   dispatch: Dispatch<Action>;
 }
 
-export const useUser = (): AuthHook => {
+export const useUser = (currentUser: firebase.User): AuthHook => {
   const [state, dispatch] = useReducer(userReducer, {
     isAuthChecked: false,
-    currentUser: null,
+    currentUser: currentUser,
   });
 
   return { state, dispatch };
