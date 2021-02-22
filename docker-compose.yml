@@ -23,7 +23,7 @@ services:
     networks:
       - backend
     working_dir: /opt/workspace
-    command: "firebase emulators:start"
+    command: "firebase emulators:start --import=./firebase/data --export-on-exit"
     tty: true
   storybook:
     build: frontend/docker
