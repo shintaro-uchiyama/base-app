@@ -9,7 +9,7 @@
     "setup": "semantic-release-cli setup",
     "semantic-release": "semantic-release",
     "husky-init": "husky init",
-    "prepare": "husky install"
+    "postinstall": "husky install"
   },
   "devDependencies": {
     "husky": "^5.1.3",
