@@ -1,64 +1,42 @@
-import { FC, useContext } from "react";
-import firebase from "../hooks/firebase";
-import Head from "next/head";
+import { FC, useContext, Suspense } from "react";
+import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import firebase from "../services/firebase";
 import styles from "../styles/Home.module.css";
-import { AuthContext } from "../components/context/Auth";
-import GoogleSignIn from "../components/atoms/GoogleSignIn";
+import { AuthContext } from "../context/Auth";
+import GoogleSignInButton from "../components/atoms/GoogleSignInButton";
+import { Grid, CircularProgress } from "@material-ui/core";
 
 const Home: FC = () => {
-  const { currentUser } = useContext(AuthContext);
-  firebase
-    .auth()
-    .getRedirectResult()
-    .then((result) => {
-      console.log("result: ", result);
-      if (result.credential) {
-        /** @type {firebase.auth.OAuthCredential} */
-        const credential = result.credential;
+  const [t] = useTranslation(["index"]);
 
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const token = credential.toJSON();
-        console.log("success: ", credential, token);
-        // ...
-      }
-      // The signed-in user info.
-      const user = result.user;
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      const credential = error.credential;
-      // ...
-      console.log("fail: ", errorCode, errorMessage, credential);
-    });
-  const login = () => {
+  const { state } = useContext(AuthContext);
+  const { currentUser } = state;
+
+  const signIn = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithRedirect(provider);
+    await firebase.auth().signInWithRedirect(provider);
   };
+
   return (
-    <div className={styles.container}>
-      <link
-        rel="stylesheet"
-        type="text/css"
-        href="//fonts.googleapis.com/css?family=Open+Sans"
-      />
-
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
+    <Grid container>
       <main className={styles.main}>
-        <h1 className={styles.title}>Good Morning, World!</h1>
-
-        <GoogleSignIn />
+        <h1 className={styles.title}>{t("title")}</h1>
+        {currentUser ? (
+          <Link href="/about">
+            <a>{t("buttons.about")}</a>
+          </Link>
+        ) : (
+          <GoogleSignInButton onClick={signIn} />
+        )}
       </main>
-    </div>
+    </Grid>
   );
 };
 
-export default Home;
+const HomeWrapper = () => (
+  <Suspense fallback={<CircularProgress />}>
+    <Home />
+  </Suspense>
+);
+export default HomeWrapper;

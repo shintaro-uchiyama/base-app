@@ -1,4 +1,10 @@
+import "../i18n"
+import React, {Suspense} from "react";
 
-export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-}
+export const decorators = [
+    (Story) => (
+        <Suspense fallback="Loading">
+            <Story />
+        </Suspense>
+    ),
+];

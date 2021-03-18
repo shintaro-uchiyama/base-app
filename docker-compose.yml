@@ -1,18 +1,39 @@
 version: '3.8'
+networks:
+  backend:
 services:
   nextjs:
-    build: frontend/docker
+    build:
+      context: ./frontend
+      dockerfile: ./docker/Dockerfile
     container_name: frontend
     volumes:
       - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
     command: "yarn dev"
     ports:
-      - "3000:3000"
+      - 3000:3000
+  firebase:
+    build: frontend/docker/firebase
+    container_name: firebase
+    ports:
+      - 4000:4000
+      - 9099:9099
+    volumes:
+      - ./frontend:/opt/workspace
+    networks:
+      - backend
+    working_dir: /opt/workspace
+    command: "firebase emulators:start --import=./firebase/data --export-on-exit"
+    tty: true
   storybook:
-    build: frontend/docker
+    build:
+      context: ./frontend
+      dockerfile: ./docker/Dockerfile
     container_name: storybook
     volumes:
       - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
     command: "yarn storybook"
     ports:
       - "6006:6006"

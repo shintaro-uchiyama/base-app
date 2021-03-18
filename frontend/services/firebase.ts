@@ -1,4 +1,5 @@
 import firebase from "firebase/app";
+import "firebase/auth";
 
 const config = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -13,6 +14,11 @@ const config = {
 
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
+}
+
+if (process.env.NODE_ENV !== "production") {
+  const auth = firebase.auth();
+  auth.useEmulator(process.env.FIREBASE_AUTH_EMULATOR_URL);
 }
 
 export default firebase;
