@@ -19,3 +19,9 @@ bazel-*
 
 # local ide
 .idea
+
+# local mac
+.DS_Store
+
+# local tool like semantic-release
+node_modules
