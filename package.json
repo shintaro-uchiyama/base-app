@@ -5,6 +5,17 @@
   "author": "shintaro.a.uchiyama@gmail.com",
   "license": "MIT",
   "private": true,
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github"
+    ],
+    "branches": [
+      "main",
+      "add-semantic-release"
+    ]
+  },
   "scripts": {
     "setup": "semantic-release-cli setup",
     "semantic-release": "semantic-release"

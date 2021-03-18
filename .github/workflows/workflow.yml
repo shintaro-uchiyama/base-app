@@ -1,16 +1,22 @@
-name: CI
-on: push
+name: Release
+on:
+  push:
+    branches:
+      - main
+      - add-semantic-release # FIXME: to test
 jobs:
-  test:
-    runs-on: ubuntu-16.04
+  release:
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Checkout this repository
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
         with:
-          node-version: '12'
-      - run: yarn ci
-      - run: yarn test
+          node-version: '14.16.0'
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
       - name: Release
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: yarn run semantic-release
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn semantic-release
