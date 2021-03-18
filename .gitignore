@@ -19,3 +19,6 @@ bazel-*
 
 # local ide
 .idea
+
+# local tool like semantic-release
+node_modules
