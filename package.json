@@ -12,8 +12,7 @@
       "@semantic-release/github"
     ],
     "branches": [
-      "main",
-      "add-semantic-release"
+      "main"
     ]
   },
   "scripts": {
