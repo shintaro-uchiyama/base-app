@@ -5,21 +5,14 @@
   "author": "shintaro.a.uchiyama@gmail.com",
   "license": "MIT",
   "private": true,
-  "release": {
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/github"
-    ],
-    "branches": [
-      "main"
-    ]
-  },
   "scripts": {
     "setup": "semantic-release-cli setup",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "husky-init": "husky init",
+    "prepare": "husky install"
   },
   "devDependencies": {
+    "husky": "^5.1.3",
     "semantic-release": "^17.4.2",
     "semantic-release-cli": "^5.4.3"
   }
