@@ -1,6 +1,13 @@
 # 概要
 言葉を用いた連想ゲーム  
 
+# 環境構築
+
+```zsh
+gsutil cp gs://ucwork-secrets/.env.local ./frontend/
+docker-compose up -d
+```
+
 # 実行方法
 ```zsh
 $ bazel run //:gazelle
