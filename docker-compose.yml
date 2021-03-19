@@ -24,7 +24,7 @@ services:
     networks:
       - backend
     working_dir: /opt/workspace
-    command: "firebase emulators:start --import=./firebase/data --export-on-exit"
+    command: "firebase emulators:start --import=./firebase/data --export-on-exit --project ucwork"
     tty: true
   storybook:
     build:
