@@ -1,6 +1,4 @@
 version: '3.8'
-networks:
-  backend:
 services:
   nextjs:
     build:
@@ -21,8 +19,6 @@ services:
       - 9099:9099
     volumes:
       - ./frontend:/opt/workspace
-    networks:
-      - backend
     working_dir: /opt/workspace
     command: "firebase emulators:start --import=./firebase/data --export-on-exit --project ucwork"
     tty: true
