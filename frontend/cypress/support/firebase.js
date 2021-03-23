@@ -28,16 +28,22 @@ import firebase from "firebase/app";
 import "firebase/auth";
 
 const config = {
-    apiKey: Cypress.env('FIREBASE_API_KEY'),
+  apiKey: Cypress.env("FIREBASE_API_KEY"),
 };
 
 if (!firebase.apps.length) {
-    firebase.initializeApp(config);
+  firebase.initializeApp(config);
 }
 
 if (process.env.NODE_ENV !== "production") {
-    const auth = firebase.auth();
-    auth.useEmulator(Cypress.env('FIREBASE_AUTH_EMULATOR_URL'));
+  const auth = firebase.auth();
+  auth.useEmulator(Cypress.env("FIREBASE_AUTH_EMULATOR_URL"));
 }
 
-export default firebase;
+export const signInWithEmailAndPassword = async (email, password) => {
+  return await firebase.auth().signInWithEmailAndPassword(email, password);
+};
+
+export const createUserWithEmailAndPassword = async (email, password) => {
+  return await firebase.auth().createUserWithEmailAndPassword(email, password);
+};

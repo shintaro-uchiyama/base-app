@@ -1,28 +1,28 @@
-import firebase from "../../support/firebase";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "../../support/firebase";
 
 describe("Authentication test in index page", () => {
+  const email = "test@example.com";
+  const password = "123456";
+
   beforeEach(() => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword("test@example.com", "123456")
+    signInWithEmailAndPassword(email, password)
       .then(async (user) => {
         await user.user.delete();
-        await firebase
-          .auth()
-          .createUserWithEmailAndPassword("test@example.com", "123456");
+        await createUserWithEmailAndPassword(email, password);
       })
       .catch(async (e) => {
-        console.log("e: ", e);
-        await firebase
-          .auth()
-          .createUserWithEmailAndPassword("test@example.com", "123456");
+        await createUserWithEmailAndPassword(email, password);
       });
   });
 
   it("Login by firebase authentication", () => {
-    console.log("test start");
     cy.visit("/");
     cy.get("[data-cy=link-to-about]").click();
     cy.url().should("include", "/about");
+
+    cy.get("[data-cy=user-email]").should("contain", email);
   });
 });
