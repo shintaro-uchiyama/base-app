@@ -13,7 +13,7 @@ const About = () => {
   return (
     <div className={styles.container}>
       <h1>{t("title")}</h1>
-      <div>{currentUser.displayName}</div>
+      <div>{currentUser.email}</div>
     </div>
   );
 };

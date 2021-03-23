@@ -4,7 +4,7 @@
 # 環境構築
 
 ```zsh
-gsutil cp gs://ucwork-secrets/.env.local ./frontend/
+gsutil cp gs://ucwork-secrets/.env.local ./frontend/.env
 docker-compose up -d
 ```
 
