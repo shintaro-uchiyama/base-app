@@ -59,17 +59,21 @@ jobs:
       - name: install firebase emulator
         run: npm install -g firebase-tools
 
-      - name: Up firebase emulator
-        run: firebase emulators:start --import=./firebase/data --export-on-exit --project ucwork
-        working-directory: frontend
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11.0.4'
+          java-package: jre
+          architecture: x64
 
       - name: 'UI Tests - Chrome'
         uses: cypress-io/github-action@v2
         with:
           # we have already installed all dependencies above
           install: false
-          start: yarn dev
-          wait-on: 'http://localhost:3000'
+          start: |
+            firebase emulators:start --import=./firebase/data --export-on-exit --project ucwork --only auth,ui
+            yarn dev
+          wait-on: 'http://localhost:3000, http://localhost:4000'
           wait-on-timeout: 120
           browser: chrome
           record: true

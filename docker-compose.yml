@@ -20,7 +20,7 @@ services:
     volumes:
       - ./frontend:/opt/workspace
     working_dir: /opt/workspace
-    command: "firebase emulators:start --import=./firebase/data --export-on-exit --project ucwork"
+    command: "firebase emulators:start --import=./firebase/data --export-on-exit --project ucwork --only 'auth,ui' "
     tty: true
   storybook:
     build:
