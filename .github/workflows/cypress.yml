@@ -1,9 +1,9 @@
 name: Cypress Tests with Install Job and UI Chrome Job x 3
 
 on:
-  push:
+  pull_request:
     branches:
-      - introduce-cypress
+      - main
 
 jobs:
   install:
