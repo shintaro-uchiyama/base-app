@@ -39,3 +39,8 @@ firebase-debug.log*
 firestore-debug.log*
 ui-debug.log*
 .firebaserc
+
+# cypress
+screenshots
+videos
+cypress.json

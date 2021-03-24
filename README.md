@@ -5,6 +5,7 @@
 
 ```zsh
 gsutil cp gs://ucwork-secrets/.env.local ./frontend/.env
+gsutil cp gs://ucwork-secrets/cypress.json ./frontend/cypress.json
 docker-compose up -d
 ```
 
