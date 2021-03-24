@@ -12,17 +12,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          path: frontend
 
       - uses: actions/cache@v2
         id: yarn-and-build-cache
         with:
           path: |
             ~/.cache/Cypress
-            build
-            node_modules
-          key: ${{ runner.os }}-node_modules-build-${{ hashFiles('**/yarn.lock') }}
+            frontend/build
+            frontend/node_modules
+          key: ${{ runner.os }}-node_modules-build-${{ hashFiles('frontend/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-node_modules-build-
 
@@ -32,6 +30,7 @@ jobs:
           # Disable running of tests within install job
           runTests: false
           install-command: yarn --frozen-lockfile --silent
+          working-directory: frontend
 
   ui-chrome-tests:
     runs-on: ubuntu-20.04
