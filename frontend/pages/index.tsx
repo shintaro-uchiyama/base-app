@@ -24,7 +24,7 @@ const Home: FC = () => {
         <h1 className={styles.title}>{t("title")}</h1>
         {currentUser ? (
           <Link href="/about">
-            <a>{t("buttons.about")}</a>
+            <a data-cy="link-to-about" >{t("buttons.about")}</a>
           </Link>
         ) : (
           <GoogleSignInButton onClick={signIn} />
