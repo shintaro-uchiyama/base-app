@@ -4,6 +4,31 @@ resource "aws_s3_bucket" "terraform_state" {
     enabled = true
   }
 }
+
+data "aws_organizations_organization" "root" {}
+locals {
+  root_id = data.aws_organizations_organization.root.roots[0].id
+}
+
+resource aws_organizations_organizational_unit base_organization_unit {
+  name = "base organization unit"
+  parent_id = local.root_id
+}
+
+/*
+module "base_organization_unit" {
+  source = "../modules/management/base_organization_unit"
+  parent_organization_id = aws_organizations_organization.org.roots[0].id
+  account_name = "shintaro"
+  account_email = "shintaro.a.uchiyama+aa@gmail.com"
+}
+
+resource aws_organizations_account org_account {
+  name  = "org_account"
+  email = "shintaro.a.uchiyama+arg_account@gmail.com"
+}
+*/
+
 /*
 # organization
 module "organization" {
@@ -13,7 +38,7 @@ module "organization" {
 # base organization unit
 module "base_organization_unit" {
   source = "../modules/management/base_organization_unit"
-  parent_organization_id = module.organization.organization_id
+  parent_organization_id = aws_organizations_organization.org.roots[0].id
   account_name = "shintaro"
   account_email = "shintaro.a.uchiyama+aa@gmail.com"
 }
