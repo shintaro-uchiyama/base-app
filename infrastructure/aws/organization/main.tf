@@ -1,111 +1,87 @@
-resource "aws_s3_bucket" "terraform_state" {
-  bucket = "ucwork-root-admin-tfstate"
-  versioning {
-    enabled = true
-  }
-}
-
+# set default organization id
 data "aws_organizations_organization" "root" {}
 locals {
   root_id = data.aws_organizations_organization.root.roots[0].id
 }
 
-resource aws_organizations_organizational_unit base_organization_unit {
-  name = "base organization unit"
+/*
+core organization unit
+*/
+resource aws_organizations_organizational_unit core-ou {
+  name = "core organization unit"
   parent_id = local.root_id
 }
 
-/*
-module "base_organization_unit" {
-  source = "../modules/management/base_organization_unit"
-  parent_organization_id = aws_organizations_organization.org.roots[0].id
-  account_name = "shintaro"
-  account_email = "shintaro.a.uchiyama+aa@gmail.com"
-}
-
-resource aws_organizations_account org_account {
-  name  = "org_account"
-  email = "shintaro.a.uchiyama+arg_account@gmail.com"
-}
-*/
-
-/*
-# organization
-module "organization" {
-  source = "../modules/management/organization"
-}
-
-# base organization unit
-module "base_organization_unit" {
-  source = "../modules/management/base_organization_unit"
-  parent_organization_id = aws_organizations_organization.org.roots[0].id
-  account_name = "shintaro"
-  account_email = "shintaro.a.uchiyama+aa@gmail.com"
-}
-
 # infra
-module "infra_organization_unit" {
-  source = "../modules/management/organization_unit"
+resource aws_organizations_organizational_unit infra_organization_unit {
   name = "infra"
-  parent_organization_unit_id = module.base_organization_unit.core_organization_unit_id
+  parent_id = aws_organizations_organizational_unit.core-ou.id
 }
 
-module "infra_organization_unit_production" {
-  source = "../modules/management/organization_unit"
+# infra production
+resource aws_organizations_organizational_unit infra_production_organization_unit {
   name = "infra production"
-  parent_organization_unit_id = module.infra_organization_unit.organization_unit_id
+  parent_id = aws_organizations_organizational_unit.infra_organization_unit.id
 }
 
-module "infra_production_account" {
-  source = "../modules/identity/iam"
-  name = "shintaro.a.uchiyama+infra-production@gmail.com"
-  email = "shintaro.a.uchiyama+infra-production@gmail.com"
-  parent_organization_unit_id = module.infra_organization_unit_production.organization_unit_id
-}
-
-module "infra_organization_unit_sdlc" {
-  source = "../modules/management/organization_unit"
+# infra sdlc
+resource aws_organizations_organizational_unit infra_sdlc_organization_unit {
   name = "infra sdlc"
-  parent_organization_unit_id = module.infra_organization_unit.organization_unit_id
-}
-
-module "infra_sdlc_account" {
-  source = "../modules/identity/iam"
-  name = "shintaro.a.uchiyama+infra-sdlc@gmail.com"
-  email = "shintaro.a.uchiyama+infra-sdlc@gmail.com"
-  parent_organization_unit_id = module.infra_organization_unit_sdlc.organization_unit_id
+  parent_id = aws_organizations_organizational_unit.infra_organization_unit.id
 }
 
 # security
-module "security_organization_unit" {
-  source = "../modules/management/organization_unit"
-  name = "infra"
-  parent_organization_unit_id = module.base_organization_unit.core_organization_unit_id
+resource aws_organizations_organizational_unit security_organization_unit {
+  name = "security"
+  parent_id = aws_organizations_organizational_unit.core-ou.id
 }
 
-module "security_organization_unit_production" {
-  source = "../modules/management/organization_unit"
+# security production
+resource aws_organizations_organizational_unit security_production_organization_unit {
   name = "security production"
-  parent_organization_unit_id = module.security_organization_unit.organization_unit_id
+  parent_id = aws_organizations_organizational_unit.security_organization_unit.id
 }
 
-module "security_production_account" {
-  source = "../modules/identity/iam"
+resource aws_organizations_account security_production_account {
   name = "shintaro.a.uchiyama+security-production@gmail.com"
   email = "shintaro.a.uchiyama+security-production@gmail.com"
-  parent_organization_unit_id = module.security_organization_unit_production.organization_unit_id
+  parent_id = aws_organizations_organizational_unit.security_production_organization_unit.id
 }
 
-module "security_organization_unit_sdlc" {
-  source = "../modules/management/organization_unit"
+# security sdlc
+resource aws_organizations_organizational_unit security_sdlc_organization_unit {
   name = "security sdlc"
-  parent_organization_unit_id = module.security_organization_unit.organization_unit_id
+  parent_id = aws_organizations_organizational_unit.security_organization_unit.id
 }
 
-module "security_sdlc_account" {
-  source = "../modules/identity/iam"
-  name = "shintaro.a.uchiyama+security-sdlc@gmail.com"
-  email = "shintaro.a.uchiyama+security-sdlc@gmail.com"
-  parent_organization_unit_id = module.security_organization_unit_sdlc.organization_unit_id
-}
+/*
+custom organization unit
 */
+resource aws_organizations_organizational_unit custom-ou {
+  name = "custom organization unit"
+  parent_id = local.root_id
+}
+
+# workload
+resource aws_organizations_organizational_unit workload_organization_unit {
+  name = "workload"
+  parent_id = aws_organizations_organizational_unit.custom-ou.id
+}
+
+# workload production
+resource aws_organizations_organizational_unit workload_production_organization_unit {
+  name = "workload production"
+  parent_id = aws_organizations_organizational_unit.workload_organization_unit.id
+}
+
+# workload sdlc
+resource aws_organizations_organizational_unit workload_sdlc_organization_unit {
+  name = "workload sdlc"
+  parent_id = aws_organizations_organizational_unit.workload_organization_unit.id
+}
+
+# sandbox
+resource aws_organizations_organizational_unit sandbox_organization_unit {
+  name = "sandbox"
+  parent_id = aws_organizations_organizational_unit.custom-ou.id
+}
