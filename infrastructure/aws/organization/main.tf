@@ -90,6 +90,28 @@ resource "aws_ssoadmin_managed_policy_attachment" "main" {
   permission_set_arn = each.value.arn
 }
 
+data "aws_identitystore_group" "admin" {
+  identity_store_id = tolist(data.aws_ssoadmin_instances.main.identity_store_ids)[0]
+
+  filter {
+    attribute_path  = "DisplayName"
+    attribute_value = "landing-zone-admin"
+  }
+}
+
+resource "aws_ssoadmin_account_assignment" "admin" {
+  for_each = toset(aws_organizations_organization.org.accounts[*].id)
+
+  instance_arn       = tolist(data.aws_ssoadmin_instances.main.arns)[0]
+  permission_set_arn = aws_ssoadmin_permission_set.main["AdministratorAccess"].arn
+
+  principal_id   = data.aws_identitystore_group.admin.group_id
+  principal_type = "GROUP"
+
+  target_id   = each.value
+  target_type = "AWS_ACCOUNT"
+}
+
 /*
 custom organization unit
 */
