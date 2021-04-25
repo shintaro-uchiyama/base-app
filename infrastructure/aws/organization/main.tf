@@ -3,6 +3,7 @@ resource "aws_organizations_organization" "org" {
   aws_service_access_principals = [
     "cloudtrail.amazonaws.com",
     "config.amazonaws.com",
+    "sso.amazonaws.com",
   ]
 
   feature_set = "ALL"
@@ -66,6 +67,27 @@ resource aws_organizations_account log_archive_production_account {
 resource aws_organizations_organizational_unit security_sdlc_organization_unit {
   name = "security sdlc"
   parent_id = aws_organizations_organizational_unit.security_organization_unit.id
+}
+
+# sso
+data "aws_ssoadmin_instances" "main" {}
+
+resource "aws_ssoadmin_permission_set" "main" {
+  for_each = toset([
+    "AdministratorAccess",
+    "ReadOnlyAccess"
+  ])
+
+  name         = each.value
+  instance_arn = tolist(data.aws_ssoadmin_instances.main.arns)[0]
+}
+
+resource "aws_ssoadmin_managed_policy_attachment" "main" {
+  for_each = aws_ssoadmin_permission_set.main
+
+  instance_arn       = tolist(data.aws_ssoadmin_instances.main.arns)[0]
+  managed_policy_arn = "arn:aws:iam::aws:policy/${each.key}"
+  permission_set_arn = each.value.arn
 }
 
 /*
