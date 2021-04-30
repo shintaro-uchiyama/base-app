@@ -4,6 +4,7 @@ resource "aws_organizations_organization" "org" {
     "cloudtrail.amazonaws.com",
     "config.amazonaws.com",
     "sso.amazonaws.com",
+    "config-multiaccountsetup.amazonaws.com",
   ]
 
   feature_set = "ALL"
@@ -61,6 +62,21 @@ resource aws_organizations_account log_archive_production_account {
   name = "log-archive-production"
   email = "shintaro.a.uchiyama+log-archive-production@gmail.com"
   parent_id = aws_organizations_organizational_unit.security_production_organization_unit.id
+}
+
+resource "null_resource" "config_delegated" {
+  provisioner "local-exec" {
+    command = "aws organizations register-delegated-administrator --account-id ${aws_organizations_account.log_archive_production_account.id} --service-principal config.amazonaws.com"
+    on_failure = continue
+  }
+}
+
+resource "null_resource" "config_multi_setup_delegated" {
+  provisioner "local-exec" {
+    command = "aws organizations register-delegated-administrator --account-id ${aws_organizations_account.log_archive_production_account.id} --service-principal config-multiaccountsetup.amazonaws.com"
+    on_failure = continue
+  }
+  depends_on = [ null_resource.config_delegated ]
 }
 
 # security sdlc
