@@ -30,22 +30,20 @@ resource "aws_iam_policy" "s3_config_org_policy" {
   "Version": "2012-10-17",
   "Statement": [
     {
-       "Effect": "Allow",
-       "Action": ["s3:PutObject"],
-       "Resource": ["${var.bucket_arn}/*"],
-       "Condition":
-        {
-          "StringLike":
-            {
-              "s3:x-amz-acl": "bucket-owner-full-control"
-            }
+      "Effect": "Allow",
+      "Action": ["s3:PutObject"],
+      "Resource": ["${var.bucket_arn}/AWSLogs/*"],
+      "Condition": {
+        "StringLike": {
+          "s3:x-amz-acl": "bucket-owner-full-control"
         }
-     },
-     {
-       "Effect": "Allow",
-       "Action": ["s3:GetBucketAcl"],
-       "Resource": "${var.bucket_arn}"
-     }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetBucketAcl"],
+      "Resource": "${var.bucket_arn}"
+    }
   ]
 }
 EOF

@@ -4,6 +4,6 @@ output "config_s3_arn" {
 }
 
 output "config_s3_id" {
-    value = aws_s3_bucket.config_bucket.bucket
+    value = aws_s3_bucket.config_bucket.id
     description = "AWS Config Aggregator ARN"
 }
