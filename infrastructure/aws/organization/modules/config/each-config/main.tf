@@ -17,9 +17,6 @@ resource "aws_iam_role" "config_role" {
 }
 EOF
 }
-resource "aws_iam_service_linked_role" "config_role" {
-  aws_service_name = "config.amazonaws.com"
-}
 
 resource "aws_iam_policy" "s3_config_org_policy" {
   path        = "/"

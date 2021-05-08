@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias = "config-aggregator-account"
+  alias = "log-archive-production"
 
   region  = "ap-northeast-1"
   assume_role {
@@ -17,5 +17,23 @@ provider "aws" {
   region  = "ap-northeast-1"
   assume_role {
     role_arn = "arn:aws:iam::${aws_organizations_account.ucwork_production_account.id}:role/OrganizationAccountAccessRole"
+  }
+}
+
+provider "aws" {
+  alias = "shared-services-production"
+
+  region  = "ap-northeast-1"
+  assume_role {
+    role_arn = "arn:aws:iam::${aws_organizations_account.shared_services_production_account.id}:role/OrganizationAccountAccessRole"
+  }
+}
+
+provider "aws" {
+  alias = "ucwork-sdlc"
+
+  region  = "ap-northeast-1"
+  assume_role {
+    role_arn = "arn:aws:iam::${aws_organizations_account.ucwork_sdlc_account.id}:role/OrganizationAccountAccessRole"
   }
 }
