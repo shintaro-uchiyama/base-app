@@ -1,6 +1,6 @@
-variable "_count" {
-  type        = number
-  default     = 0
-  description = "delegated account id for aws config using organizations"
+variable "config_rule_target_region" {
+  type        = string
+  default     = ""
+  description = "config rule target region"
 }
 

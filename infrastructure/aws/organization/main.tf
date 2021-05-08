@@ -64,21 +64,6 @@ resource aws_organizations_account log_archive_production_account {
   parent_id = aws_organizations_organizational_unit.security_production_organization_unit.id
 }
 
-resource "null_resource" "config_delegated" {
-  provisioner "local-exec" {
-    command = "aws organizations register-delegated-administrator --account-id ${aws_organizations_account.log_archive_production_account.id} --service-principal config.amazonaws.com"
-    on_failure = continue
-  }
-}
-
-resource "null_resource" "config_multi_setup_delegated" {
-  provisioner "local-exec" {
-    command = "aws organizations register-delegated-administrator --account-id ${aws_organizations_account.log_archive_production_account.id} --service-principal config-multiaccountsetup.amazonaws.com"
-    on_failure = continue
-  }
-  depends_on = [ null_resource.config_delegated ]
-}
-
 module "config_aggregator" {
   source = "./modules/config/aggregator"
 
@@ -152,7 +137,7 @@ module "config_ucwork_sdlc" {
 # -----------------------------------------------------------
 module "config_rules" {
   source = "./modules/config/rules"
-  _count = data.aws_region.current.name == "ap-northeast-1" ? 1 : 0
+  config_rule_target_region = "ap-northeast-1"
 
   depends_on = [
     module.config_management,

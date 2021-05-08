@@ -152,6 +152,21 @@ EOF
 # -----------------------------------------------------------
 # set up the Config Recorder
 # -----------------------------------------------------------
+resource "null_resource" "config_delegated" {
+  provisioner "local-exec" {
+    command = "aws organizations register-delegated-administrator --account-id ${var.account_id} --service-principal config.amazonaws.com"
+    on_failure = continue
+  }
+}
+
+resource "null_resource" "config_multi_setup_delegated" {
+  provisioner "local-exec" {
+    command = "aws organizations register-delegated-administrator --account-id ${var.account_id} --service-principal config-multiaccountsetup.amazonaws.com"
+    on_failure = continue
+  }
+  depends_on = [ null_resource.config_delegated ]
+}
+
 resource "aws_config_configuration_recorder" "config_recorder" {
   role_arn = aws_iam_role.config_role.arn
 

@@ -1,7 +1,5 @@
 # AWS Config Rule that manages IAM Password Policy
 resource "aws_config_organization_managed_rule" "iam_policy_organization_config_rule" {
-  count = var._count
-
   input_parameters  = <<EOF
     {
       "RequireUppercaseCharacters": "true",
@@ -20,8 +18,6 @@ resource "aws_config_organization_managed_rule" "iam_policy_organization_config_
 
 # AWS Config Rule that manages IAM Root Access Keys to see if they exist
 resource "aws_config_organization_managed_rule" "iam_root_access_key_organization_config_rule" {
-  count = var._count
-
   name              = "iam-root-access-key-check"
   rule_identifier   = "IAM_ROOT_ACCESS_KEY_CHECK"
 }
@@ -29,8 +25,6 @@ resource "aws_config_organization_managed_rule" "iam_root_access_key_organizatio
 # AWS Config Rule that checks whether your AWS account is enabled to use multi-factor authentication (MFA)
 # hardware device to sign in with root credentials.
 resource "aws_config_organization_managed_rule" "root_hardware_mfa_organization_config_rule" {
-  count = var._count
-
   name              = "root-hardware-mfa"
   rule_identifier   = "ROOT_ACCOUNT_HARDWARE_MFA_ENABLED"
 }
@@ -38,8 +32,6 @@ resource "aws_config_organization_managed_rule" "root_hardware_mfa_organization_
 # AWS Config Rule that checks whether users of your AWS account require a multi-factor authentication (MFA)
 # device to sign in with root credentials.
 resource "aws_config_organization_managed_rule" "root_account_mfa_organization_config_rules" {
-  count = var._count
-
   name              = "root-account-mfa-enabled"
   rule_identifier   = "ROOT_ACCOUNT_MFA_ENABLED"
 }
