@@ -29,7 +29,7 @@ resource "aws_iam_policy" "s3_config_org_policy" {
     {
       "Effect": "Allow",
       "Action": ["s3:PutObject"],
-      "Resource": ["${var.bucket_arn}/AWSLogs/*"],
+      "Resource": ["${var.bucket_arn}/AWSLogs/*/Config/*"],
       "Condition": {
         "StringLike": {
           "s3:x-amz-acl": "bucket-owner-full-control"
@@ -61,26 +61,23 @@ resource "aws_iam_role_policy_attachment" "config_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSConfigRole"
 }
 
-# auth
+# -----------------------------------------------------------
+# set up the Config
+# -----------------------------------------------------------
 resource "aws_config_aggregate_authorization" "config_aggregation" {
-  account_id = var.aggregated_account_id
-  region = data.aws_region.current.name
+  account_id = var.aggregator_account_id
+  region = var.config_aggregate_region
 }
 
-# -----------------------------------------------------------
-# set up the  Config Recorder
-# -----------------------------------------------------------
 resource "aws_config_configuration_recorder" "config_recorder" {
   role_arn = aws_iam_role.config_role.arn
 }
 
-# Delivery channel resource and bucket location to specify configuration history location.
 resource "aws_config_delivery_channel" "config_channel" {
   s3_bucket_name = var.bucket_id
   depends_on = [aws_config_configuration_recorder.config_recorder]
 }
 
-# config
 resource "aws_config_configuration_recorder_status" "config_recorder_status" {
   name       = aws_config_configuration_recorder.config_recorder.name
   is_enabled = true

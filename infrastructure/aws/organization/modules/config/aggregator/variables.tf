@@ -1,11 +1,11 @@
-variable "account_id" {
+variable "aggregator_account_id" {
   type        = string
   default     = ""
-  description = "delegated account id for aws config using organizations"
+  description = "config aggregator account id"
 }
 
-variable "region" {
+variable "aggregator_s3_region" {
   type        = string
   default     = ""
-  description = "region for aws config s3 bucket"
+  description = "config aggregator s3 region"
 }

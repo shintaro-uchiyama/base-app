@@ -1,15 +1,3 @@
-variable "account_id" {
-  type        = string
-  default     = ""
-  description = "delegated account id for aws config using organizations"
-}
-
-variable "region" {
-  type        = string
-  default     = ""
-  description = "region for aws config s3 bucket"
-}
-
 variable "bucket_arn" {
   type        = string
   default     = ""
@@ -19,11 +7,17 @@ variable "bucket_arn" {
 variable "bucket_id" {
   type        = string
   default     = ""
-  description = "organization config s3 bucket arn"
+  description = "organization config s3 bucket name(id)"
 }
 
-variable "aggregated_account_id" {
+variable "aggregator_account_id" {
   type        = string
   default     = ""
-  description = "organization config s3 bucket arn"
+  description = "config aggregator account id"
+}
+
+variable "config_aggregate_region" {
+  type        = string
+  default     = ""
+  description = "config aggregate region"
 }

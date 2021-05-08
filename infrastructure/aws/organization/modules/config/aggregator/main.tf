@@ -1,6 +1,6 @@
 # logging s3
 resource "aws_s3_bucket" "config_bucket" {
-  bucket = "config-bucket-${var.account_id}-${var.region}"
+  bucket = "config-bucket-${var.aggregator_account_id}-${var.aggregator_s3_region}"
   acl    = "private"
 
   server_side_encryption_configuration {
@@ -27,7 +27,7 @@ resource "aws_s3_bucket_policy" "config_logging_policy" {
         ]
       },
       "Action": "s3:GetBucketAcl",
-      "Resource": "arn:aws:s3:::${aws_s3_bucket.config_bucket.id}"
+      "Resource": "${aws_s3_bucket.config_bucket.arn}"
     },
     {
       "Sid": "AWSConfigBucketExistenceCheck",
@@ -38,7 +38,7 @@ resource "aws_s3_bucket_policy" "config_logging_policy" {
         ]
       },
       "Action": "s3:ListBucket",
-      "Resource": "arn:aws:s3:::${aws_s3_bucket.config_bucket.id}"
+      "Resource": "${aws_s3_bucket.config_bucket.arn}"
     },
     {
       "Sid": "AWSConfigBucketDelivery",
@@ -49,7 +49,7 @@ resource "aws_s3_bucket_policy" "config_logging_policy" {
         ]
       },
       "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::${aws_s3_bucket.config_bucket.id}/AWSLogs/*/Config/*",
+      "Resource": "${aws_s3_bucket.config_bucket.arn}/AWSLogs/*/Config/*",
       "Condition": {
         "StringEquals": {
           "s3:x-amz-acl": "bucket-owner-full-control"
@@ -82,31 +82,6 @@ resource "aws_iam_role" "config_role" {
 EOF
 }
 
-# config
-resource "aws_config_configuration_aggregator" "organization" {
-  name = "organization-aggregator"
-
-  organization_aggregation_source {
-    all_regions = true
-    role_arn    = aws_iam_role.config_role.arn
-  }
-}
-
-resource "aws_iam_role_policy_attachment" "config_org_policy_attach" {
-  role       = aws_iam_role.config_role.name
-  policy_arn = aws_iam_policy.config_org_policy.arn
-}
-
-resource "aws_iam_role_policy_attachment" "config_policy_attach" {
-  role       = aws_iam_role.config_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSConfigRole"
-}
-
-resource "aws_iam_role_policy_attachment" "read_only_policy_attach" {
-  role       = aws_iam_role.config_role.name
-  policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
-}
-
 resource "aws_iam_policy" "config_org_policy" {
   path        = "/"
   description = "IAM Policy for AWS Config"
@@ -132,7 +107,7 @@ resource "aws_iam_policy" "config_org_policy" {
     {
       "Effect": "Allow",
       "Action": ["s3:PutObject"],
-      "Resource": ["${aws_s3_bucket.config_bucket.arn}/AWSLogs/${var.account_id}/*"],
+      "Resource": ["${aws_s3_bucket.config_bucket.arn}/AWSLogs/${var.aggregator_account_id}/*"],
       "Condition": {
         "StringLike": {
           "s3:x-amz-acl": "bucket-owner-full-control"
@@ -149,22 +124,46 @@ resource "aws_iam_policy" "config_org_policy" {
 EOF
 }
 
+resource "aws_iam_role_policy_attachment" "config_org_policy_attach" {
+  role       = aws_iam_role.config_role.name
+  policy_arn = aws_iam_policy.config_org_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "config_policy_attach" {
+  role       = aws_iam_role.config_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSConfigRole"
+}
+
+resource "aws_iam_role_policy_attachment" "read_only_policy_attach" {
+  role       = aws_iam_role.config_role.name
+  policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+}
+
 # -----------------------------------------------------------
-# set up the Config Recorder
+# set up the aggregator account Config
 # -----------------------------------------------------------
 resource "null_resource" "config_delegated" {
   provisioner "local-exec" {
-    command = "aws organizations register-delegated-administrator --account-id ${var.account_id} --service-principal config.amazonaws.com"
+    command = "aws organizations register-delegated-administrator --account-id ${var.aggregator_account_id} --service-principal config.amazonaws.com"
     on_failure = continue
   }
 }
 
 resource "null_resource" "config_multi_setup_delegated" {
   provisioner "local-exec" {
-    command = "aws organizations register-delegated-administrator --account-id ${var.account_id} --service-principal config-multiaccountsetup.amazonaws.com"
+    command = "aws organizations register-delegated-administrator --account-id ${var.aggregator_account_id} --service-principal config-multiaccountsetup.amazonaws.com"
     on_failure = continue
   }
   depends_on = [ null_resource.config_delegated ]
+}
+
+resource "aws_config_configuration_aggregator" "organization" {
+  name = "organization-aggregator"
+
+  organization_aggregation_source {
+    all_regions = true
+    role_arn    = aws_iam_role.config_role.arn
+  }
 }
 
 resource "aws_config_configuration_recorder" "config_recorder" {
