@@ -75,7 +75,7 @@ resource "aws_config_delivery_channel" "config_channel" {
 
 resource "aws_config_configuration_recorder_status" "config_recorder_status" {
   name       = aws_config_configuration_recorder.config_recorder.name
-  is_enabled = true
+  is_enabled = false
   depends_on = [aws_config_delivery_channel.config_channel]
 }
 
